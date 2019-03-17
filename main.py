@@ -43,7 +43,7 @@ def sprich_dreier(dreier):
 
 def sprich_anhang(gruppen, index):
     singular = "s, tausend, e Million, e Milliarde, e Billion, e Billiarde, e Trillion, e Trilliarde".split(", ")
-    plural = ", tausend, Millionen, Milliarden, Billionen, Billiarden, Trillionen, Trilliarden".split(", ")
+    plural = ",tausend, Millionen, Milliarden, Billionen, Billiarden, Trillionen, Trilliarden".split(",")
     nulleins = "s, stausend, s Millionen, s Milliarden, s Billionen, s Billiarden, s Trillionen, s Trilliarden".split(", ")
 
     anh = ""
@@ -59,14 +59,17 @@ def sprich_anhang(gruppen, index):
 
 
 def sprich_zahl(zahl):
-    text = ""
+    if zahl == 0:
+        return "null"
+    text = "" if zahl > 0 else "minus "
+    zahl = abs(zahl)
     gruppen = gruppieren(zahl)
     index = len(gruppen) - 1
     for dreier in reversed(gruppen):
         text += sprich_dreier(dreier)
         text += sprich_anhang(gruppen, index)
         index -= 1
-    return text
+    return text.rstrip()
 
 
 if __name__ == '__main__':
